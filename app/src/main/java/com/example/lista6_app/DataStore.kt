@@ -13,5 +13,6 @@ class DataStore {
         val SHARED_PREFS = "sharedPreferences"
 
         val INVITATION_KEY = "invitationKey"
+        val INVITATION_KEY_BACK = "invitationKeyBack"
     }
 }

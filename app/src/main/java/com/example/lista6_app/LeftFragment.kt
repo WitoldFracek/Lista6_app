@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -62,18 +63,20 @@ class LeftFragment : Fragment() {
                 val newInv = invs[position]
                 val myBundle = Bundle()
                 myBundle.putString(DataStore.INVITATION_KEY, newInv)
-                parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY, myBundle)
+                //Toast.makeText(requireContext(), newInv, Toast.LENGTH_LONG).show()
+                parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY_BACK, myBundle)
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
         }
-
-        parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY, viewLifecycleOwner) {key, bundle ->
-            val inv = bundle.getString(DataStore.INVITATION_KEY, "Hello ERR")
-            invitationList.prompt = inv
-        }
+//        parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY, viewLifecycleOwner) {key, bundle ->
+//            val inv = bundle.getString(DataStore.INVITATION_KEY, "Hello ERR")
+//
+//            invitationList.prompt = if(inv.isNullOrEmpty()){"Hello"} else {inv.toString()}
+//            //Toast.makeText(requireContext(), inv, Toast.LENGTH_LONG).show()
+//        }
 
 
     }

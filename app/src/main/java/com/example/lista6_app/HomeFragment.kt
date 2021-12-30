@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -54,9 +55,10 @@ class HomeFragment : Fragment() {
         btmNav.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.btm_left -> {
-                    val myBundle = Bundle()
-                    myBundle.putString(DataStore.INVITATION_KEY, invitationText.text.toString())
-                    parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY, myBundle)
+//                    val myBundle = Bundle()
+//                    myBundle.putString(DataStore.INVITATION_KEY, invitationText.text.toString())
+//                    parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY, myBundle)
+                    //Toast.makeText(requireContext(), invitationText.text.toString(), Toast.LENGTH_LONG).show()
                     navController.navigate(R.id.action_global_leftFragment)
                 }
                 R.id.btm_center -> navController.navigate(R.id.action_global_homeFragment)
@@ -65,7 +67,7 @@ class HomeFragment : Fragment() {
             true
         }
 
-        parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY, viewLifecycleOwner) {key, bundle ->
+        parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY_BACK, viewLifecycleOwner) {key, bundle ->
             val newInv = bundle.getString(DataStore.INVITATION_KEY, "Hello")
             invitationText.text = newInv
             //invitationTextLandscape.text = newInv
