@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btm_left"
+        android:icon="@drawable/left_arrow_foreground"
+        android:title="Left" />
+    <item
+        android:id="@+id/btm_center"
+        android:icon="@drawable/home_foreground"
+        android:title="Home" />
+    <item
+        android:id="@+id/btm_right"
+        android:icon="@drawable/right_arrow_foreground"
+        android:title="Right" />
+</menu>

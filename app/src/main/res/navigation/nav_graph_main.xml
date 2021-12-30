@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph_main">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/homeFragment">
 
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.lista6_app.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/leftFragment"
+        android:name="com.example.lista6_app.LeftFragment"
+        android:label="fragment_left"
+        tools:layout="@layout/fragment_left" /><action android:id="@+id/action_global_leftFragment" app:destination="@id/leftFragment"/><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
 </navigation>

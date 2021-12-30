@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Lista6_app</string>
+    <string name="invitation">Welcome</string>
+    <string name="information">This is a text view that contains a piece of useless information. Please ignore it for it only serves a purpouse ob being a placeholder</string>
+    <string-array name="invitations">
+        <item>Welcome!</item>
+        <item>Witaj!</item>
+        <item>Hello!</item>
+        <item>Herzlich willkommen!</item>
+        <item>Konichiwa!</item>
+    </string-array>
+
 </resources>
