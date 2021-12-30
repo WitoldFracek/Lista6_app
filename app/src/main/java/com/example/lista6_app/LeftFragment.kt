@@ -1,14 +1,13 @@
 package com.example.lista6_app
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -36,6 +35,14 @@ class LeftFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        lateinit var invitation: String
+
+        val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)
+        val index = sharedPrefs.getInt(DataStore.IMAGE_INDEX_KEY, 0)
+
+        parentFragmentManager.setFragmentResultListener(DataStore.DATA_TO_LEFT, viewLifecycleOwner) { key, bundle ->
+            invitation = bundle.getString(DataStore.INVITATION_KEY, "Hello")
+        }
 
         val invitationList: Spinner = view.findViewById(R.id.invitation_list)
         ArrayAdapter.createFromResource(
@@ -43,6 +50,8 @@ class LeftFragment : Fragment() {
             R.array.invitations,
             R.layout.spiner_item
         ).also{ adapter -> invitationList.adapter = adapter}
+
+        invitationList.setSelection(sharedPrefs.getInt(DataStore.INVITATION_POSITION, 0))
 
 
         invitationList.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
@@ -57,18 +66,44 @@ class LeftFragment : Fragment() {
                 val myBundle = Bundle()
                 myBundle.putString(DataStore.INVITATION_KEY, newInv)
                 parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY_BACK, myBundle)
+                val editor = sharedPrefs.edit()
+                editor.putString(DataStore.INVITATION_KEY, newInv)
+                editor.putInt(DataStore.INVITATION_POSITION, position)
+                editor.apply()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
             }
 
         }
-//        parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY, viewLifecycleOwner) {key, bundle ->
-//            val inv = bundle.getString(DataStore.INVITATION_KEY, "Hello ERR")
-//
-//            invitationList.prompt = if(inv.isNullOrEmpty()){"Hello"} else {inv.toString()}
-//            Toast.makeText(requireContext(), inv, Toast.LENGTH_LONG).show()
-//        }
+
+        val imageGrid: GridView = view.findViewById(R.id.image_grid)
+        val adapter = ImageAdapter(requireContext())
+        imageGrid.adapter = adapter
+        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            imageGrid.numColumns = 3
+        } else {
+            imageGrid.numColumns = 2
+        }
+
+        imageGrid.onItemClickListener = object: AdapterView.OnItemClickListener {
+            override fun onItemClick(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val editor = sharedPrefs.edit()
+                editor.putInt(DataStore.IMAGE_INDEX_KEY, position)
+                editor.apply()
+            }
+
+        }
+
+
+        parentFragmentManager.setFragmentResultListener(DataStore.DATA_TO_LEFT, viewLifecycleOwner) {key, bundle ->
+            val index = bundle.getInt(DataStore.IMAGE_INDEX_KEY, 0)
+        }
 
 
     }

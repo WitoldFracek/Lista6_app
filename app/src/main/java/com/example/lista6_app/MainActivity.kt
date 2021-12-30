@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.widget.TextView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -15,7 +16,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val btmNav: BottomNavigationView = findViewById(R.id.bottom_nav)
-        btmNav.selectedItemId = R.id.btm_center
+        if(savedInstanceState == null){
+            btmNav.selectedItemId = R.id.btm_center
+        } else {
+            btmNav.selectedItemId = savedInstanceState.getInt("btmElem", R.id.btm_center)
+        }
+
     }
 
     override fun onBackPressed() {
@@ -24,6 +30,12 @@ class MainActivity : AppCompatActivity() {
             R.id.btm_center -> super.onBackPressed()
             else -> btmNav.selectedItemId = R.id.btm_center
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        val btmNav: BottomNavigationView = findViewById(R.id.bottom_nav)
+        outState.putInt("btmElem", btmNav.selectedItemId)
+        super.onSaveInstanceState(outState, outPersistentState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

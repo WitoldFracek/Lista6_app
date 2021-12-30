@@ -2,11 +2,13 @@ package com.example.lista6_app
 
 import android.content.Context
 import android.content.res.Configuration
+import android.media.Image
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.NavController
@@ -23,6 +25,8 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
 
     lateinit var navController: NavController
+    lateinit var invitationText: TextView
+    lateinit var homeImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +53,33 @@ class HomeFragment : Fragment() {
 
         navController = view.findNavController()
 
-        val invitationText: TextView = view.findViewById(R.id.invitation)
-        //val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)
-        //invitationText.text = sharedPrefs.getString(DataStore.INVITATION_KEY, "Welcome")
-        //val invitationTextLandscape: TextView = view.findViewById(R.id.invitation_landscape)
+        invitationText = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            view.findViewById(R.id.invitation)
+        } else {
+            view.findViewById(R.id.invitation_landscape)
+        }
+
+        homeImage = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+            view.findViewById(R.id.home_image)
+        } else {
+            view.findViewById(R.id.home_image_landscape)
+        }
+
+        val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)
+        invitationText.text = sharedPrefs.getString(DataStore.INVITATION_KEY, "Welcome")
+        val index = sharedPrefs.getInt(DataStore.IMAGE_INDEX_KEY, 0)
+        homeImage.setImageResource(DataStore.images[index])
 
         val btmNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
-        //btmNav.selectedItemId = R.id.btm_center
         btmNav.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.btm_left -> {navController.navigate(R.id.action_global_leftFragment)}
+                R.id.btm_left -> {
+                    val myBundle = Bundle()
+                    myBundle.putInt(DataStore.IMAGE_INDEX_KEY, index)
+                    myBundle.putString(DataStore.INVITATION_KEY, invitationText.text.toString())
+                    parentFragmentManager.setFragmentResult(DataStore.DATA_TO_LEFT, myBundle)
+                    navController.navigate(R.id.action_global_leftFragment)
+                }
                 R.id.btm_center -> {navController.navigate(R.id.action_global_homeFragment)}
                 R.id.btm_right -> {navController.navigate(R.id.action_global_rightFragment)}
                 else -> {}
@@ -69,7 +90,6 @@ class HomeFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(DataStore.INVITATION_KEY_BACK, viewLifecycleOwner) {key, bundle ->
             val newInv = bundle.getString(DataStore.INVITATION_KEY, "Hello")
             invitationText.text = newInv
-            //invitationTextLandscape.text = newInv
         }
 
 

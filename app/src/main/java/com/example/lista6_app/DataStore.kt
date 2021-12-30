@@ -13,6 +13,11 @@ class DataStore {
         val SHARED_PREFS = "sharedPreferences"
 
         val INVITATION_KEY = "invitationKey"
+        val INVITATION_POSITION = "invitationPosition"
         val INVITATION_KEY_BACK = "invitationKeyBack"
+
+        val IMAGE_INDEX_KEY = "imageIndexKey"
+
+        val DATA_TO_LEFT = "dataToLeft"
     }
 }
