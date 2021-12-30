@@ -9,9 +9,10 @@
     <Spinner
         android:id="@+id/invitation_list"
         android:layout_width="match_parent"
-        android:spinnerMode="dropdown"
         android:layout_height="100dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:spinnerMode="dropdown"
+        android:textAlignment="center" />
 
     <GridView
         android:id="@+id/image_grid"

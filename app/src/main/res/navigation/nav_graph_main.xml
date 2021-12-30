@@ -10,9 +10,26 @@
         android:name="com.example.lista6_app.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
+    <action android:id="@+id/action_global_homeFragment"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop ="true"
+        app:popUpTo="@id/homeFragment"/>
+    <fragment
+        android:id="@+id/rightFragment"
+        android:name="com.example.lista6_app.RightFragment"
+        android:label="fragment_right"
+        tools:layout="@layout/fragment_right" />
+    <action android:id="@+id/action_global_rightFragment"
+        app:destination="@id/rightFragment"
+        app:launchSingleTop ="true"
+        app:popUpTo="@id/homeFragment"/>
     <fragment
         android:id="@+id/leftFragment"
         android:name="com.example.lista6_app.LeftFragment"
         android:label="fragment_left"
-        tools:layout="@layout/fragment_left" /><action android:id="@+id/action_global_leftFragment" app:destination="@id/leftFragment"/><action android:id="@+id/action_global_homeFragment" app:destination="@id/homeFragment"/>
+        tools:layout="@layout/fragment_left" />
+    <action android:id="@+id/action_global_leftFragment"
+        app:destination="@id/leftFragment"
+        app:launchSingleTop ="true"
+        app:popUpTo="@id/homeFragment"/>
 </navigation>

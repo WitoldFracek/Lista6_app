@@ -38,17 +38,10 @@ class LeftFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val invitationList: Spinner = view.findViewById(R.id.invitation_list)
-//        val invitations = arrayOf(
-//            resources.getString(R.string.inv1),
-//            resources.getString(R.string.inv2),
-//            resources.getString(R.string.inv3),
-//            resources.getString(R.string.inv4),
-//            resources.getString(R.string.inv5)
-//        )
         ArrayAdapter.createFromResource(
             requireContext().applicationContext,
             R.array.invitations,
-            R.layout.support_simple_spinner_dropdown_item
+            R.layout.spiner_item
         ).also{ adapter -> invitationList.adapter = adapter}
 
 
@@ -63,7 +56,6 @@ class LeftFragment : Fragment() {
                 val newInv = invs[position]
                 val myBundle = Bundle()
                 myBundle.putString(DataStore.INVITATION_KEY, newInv)
-                //Toast.makeText(requireContext(), newInv, Toast.LENGTH_LONG).show()
                 parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY_BACK, myBundle)
             }
 
@@ -75,7 +67,7 @@ class LeftFragment : Fragment() {
 //            val inv = bundle.getString(DataStore.INVITATION_KEY, "Hello ERR")
 //
 //            invitationList.prompt = if(inv.isNullOrEmpty()){"Hello"} else {inv.toString()}
-//            //Toast.makeText(requireContext(), inv, Toast.LENGTH_LONG).show()
+//            Toast.makeText(requireContext(), inv, Toast.LENGTH_LONG).show()
 //        }
 
 

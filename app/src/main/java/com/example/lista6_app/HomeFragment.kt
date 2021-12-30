@@ -1,5 +1,6 @@
 package com.example.lista6_app
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -49,20 +50,18 @@ class HomeFragment : Fragment() {
         navController = view.findNavController()
 
         val invitationText: TextView = view.findViewById(R.id.invitation)
+        //val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)
+        //invitationText.text = sharedPrefs.getString(DataStore.INVITATION_KEY, "Welcome")
         //val invitationTextLandscape: TextView = view.findViewById(R.id.invitation_landscape)
 
         val btmNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
+        //btmNav.selectedItemId = R.id.btm_center
         btmNav.setOnItemSelectedListener { item ->
             when(item.itemId){
-                R.id.btm_left -> {
-//                    val myBundle = Bundle()
-//                    myBundle.putString(DataStore.INVITATION_KEY, invitationText.text.toString())
-//                    parentFragmentManager.setFragmentResult(DataStore.INVITATION_KEY, myBundle)
-                    //Toast.makeText(requireContext(), invitationText.text.toString(), Toast.LENGTH_LONG).show()
-                    navController.navigate(R.id.action_global_leftFragment)
-                }
-                R.id.btm_center -> navController.navigate(R.id.action_global_homeFragment)
-                R.id.btm_right -> {}
+                R.id.btm_left -> {navController.navigate(R.id.action_global_leftFragment)}
+                R.id.btm_center -> {navController.navigate(R.id.action_global_homeFragment)}
+                R.id.btm_right -> {navController.navigate(R.id.action_global_rightFragment)}
+                else -> {}
             }
             true
         }
@@ -72,6 +71,7 @@ class HomeFragment : Fragment() {
             invitationText.text = newInv
             //invitationTextLandscape.text = newInv
         }
+
 
     }
 
