@@ -58,6 +58,7 @@ class HomeFragment : Fragment() {
         homeImage.setImageResource(DataStore.images[index])
 
         val btmNav: BottomNavigationView = requireActivity().findViewById(R.id.bottom_nav)
+//        btmNav.visibility = View.GONE
         btmNav.setOnItemSelectedListener { item ->
             when(item.itemId){
                 R.id.btm_left -> {
