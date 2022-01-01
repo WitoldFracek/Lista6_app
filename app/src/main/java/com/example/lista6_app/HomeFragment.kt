@@ -40,12 +40,7 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-            inflater.inflate(R.layout.fragment_home, container, false)
-        } else {
-            inflater.inflate(R.layout.fragment_home_landscape, container, false)
-        }
-
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -53,17 +48,9 @@ class HomeFragment : Fragment() {
 
         navController = view.findNavController()
 
-        invitationText = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-            view.findViewById(R.id.invitation)
-        } else {
-            view.findViewById(R.id.invitation_landscape)
-        }
+        invitationText = view.findViewById(R.id.invitation)
 
-        homeImage = if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-            view.findViewById(R.id.home_image)
-        } else {
-            view.findViewById(R.id.home_image_landscape)
-        }
+        homeImage = view.findViewById(R.id.home_image)
 
         val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)
         invitationText.text = sharedPrefs.getString(DataStore.INVITATION_KEY, "Welcome")
