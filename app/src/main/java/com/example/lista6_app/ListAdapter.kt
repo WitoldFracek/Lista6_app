@@ -46,7 +46,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
         }
 
         myLVItem!!.name?.text = names[position]
-        myLVItem!!.breed?.text = breed[position]
+        myLVItem!!.breed?.text = breeds[position]
         myLVItem!!.image?.setImageResource(images[position])
         myLVItem!!.image?.setBackgroundColor(colors[position])
         return liv
@@ -64,7 +64,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
             "Burek"
         )
 
-        val breed = mutableListOf(
+        val breeds = mutableListOf(
             "Maine Coon",
             "British Shorthaired",
             "Golden Retriever"
@@ -75,6 +75,60 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
             Color.GRAY,
             Color.rgb(81, 39, 18)
         )
+
+        val genders = mutableListOf(
+            'F',
+            'M',
+            'F'
+        )
+
+        val ages = mutableListOf(
+            10,
+            8,
+            5
+        )
+
+        val behaviours = mutableListOf(
+            3.5F,
+            4.5F,
+            2F
+        )
+
+        const val CAT = 0
+        const val DOG = 1
+
+        private fun addToList(name: String?, breed: String?, color: Int?, species: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
+            names.add(name!!)
+            breeds.add(breed!!)
+            colors.add(color!!)
+            genders.add(gender!!)
+            ages.add(age!!)
+            behaviours.add(behaviour!!)
+            if(species == CAT){
+                images.add(R.drawable.cat)
+            } else {
+                images.add(R.drawable.dog)
+            }
+        }
+
+        fun updateList(position: Int, name: String?, breed: String?, color: Int?, species: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
+            if(position == -1){
+                addToList(name, breed, color, species, gender, age, behaviour)
+                return
+            }
+            names[position] = name!!
+            breeds[position] = breed!!
+            colors[position] = color!!
+            genders[position] = gender!!
+            ages[position] = age!!
+            behaviours[position] = behaviour!!
+            images[position] = if(species == CAT){
+                R.drawable.cat
+            } else {
+                R.drawable.dog
+            }
+        }
+
     }
 
 }

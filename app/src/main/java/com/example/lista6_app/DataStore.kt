@@ -19,5 +19,15 @@ class DataStore {
         val IMAGE_INDEX_KEY = "imageIndexKey"
 
         val DATA_TO_LEFT = "dataToLeft"
+
+        val LV_DATA_TO_DETAILS = "lvDataToDetails"
+
+        val LV_IMAGE = "lvImage"
+        val LV_NAME = "lvName"
+        val LV_BREED = "lvBreed"
+        val LV_GENDER = "lvGender"
+        val LV_COLOR = "lvColor"
+        val LV_AGE = "lvAge"
+        val LV_BEHAVIOUR = "lvBehaviour"
     }
 }
