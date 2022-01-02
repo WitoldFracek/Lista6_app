@@ -49,6 +49,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+
         nameText = view.findViewById(R.id.details_name)
         breedText = view.findViewById(R.id.details_breed)
         speciesText = view.findViewById(R.id.details_species)
@@ -57,13 +59,18 @@ class DetailsFragment : Fragment() {
         image = view.findViewById(R.id.details_image)
         behaviourBar = view.findViewById(R.id.details_behaviour_bar)
         behaviourBar.isEnabled = false
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
         if(savedInstanceState != null) {
             position = savedInstanceState.getInt(DataStore.LV_POSITION, 0)
         }
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _, bundle ->
             position = bundle.getInt(DataStore.LV_POSITION, 0)
+            modify()
+        }
+        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            childFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _ , bundle ->
+                position = bundle.getInt(DataStore.LV_POSITION, 0)
+            }
             modify()
         }
         modify()
@@ -90,7 +97,6 @@ class DetailsFragment : Fragment() {
             }
         } else {
             MainActivity.backToRight = false
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
         }
 
 

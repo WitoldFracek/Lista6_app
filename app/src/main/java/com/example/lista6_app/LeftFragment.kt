@@ -35,6 +35,9 @@ class LeftFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+
         lateinit var invitation: String
 
         val sharedPrefs = requireActivity().getSharedPreferences(DataStore.SHARED_PREFS, Context.MODE_PRIVATE)

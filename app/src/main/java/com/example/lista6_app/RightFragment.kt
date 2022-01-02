@@ -35,7 +35,18 @@ class RightFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         return inflater.inflate(R.layout.fragment_right, container, false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,7 +82,6 @@ class RightFragment : Fragment() {
 
                 if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
                     parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-                    requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
                     MainActivity.backToRight = true
                     navController.navigate(R.id.action_global_detailsFragment)
                 } else {

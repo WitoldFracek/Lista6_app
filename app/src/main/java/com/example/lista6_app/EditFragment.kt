@@ -1,6 +1,7 @@
 package com.example.lista6_app
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -17,6 +20,8 @@ private const val ARG_PARAM2 = "param2"
 class EditFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var navController: NavController
 
     private lateinit var nameText: TextView
     private var name = ""
@@ -59,6 +64,12 @@ class EditFragment : Fragment() {
         MainActivity.backToRight = true
 
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+
+        navController = view.findNavController()
+
+        if(savedInstanceState != null){
+            position = savedInstanceState.getInt(DataStore.LV_POSITION, 0)
+        }
 
         nameText = view.findViewById(R.id.edit_name)
         breedText = view.findViewById(R.id.edit_breed)
@@ -216,12 +227,54 @@ class EditFragment : Fragment() {
 
         })
 
+        val cancelButton: Button = view.findViewById(R.id.edit_cancel_button)
+        cancelButton.setOnClickListener {
+            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                navController.navigate(R.id.action_global_rightFragment)
+            } else if(position == -1) {
+                navController.navigate(R.id.action_global_rightFragment)
+            } else {
+                val myBundle = Bundle()
+                myBundle.putInt(DataStore.LV_POSITION, position)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+                navController.navigate(R.id.action_global_detailsFragment)
+            }
+        }
+
+        val saveButton: Button = view.findViewById(R.id.edit_save_button)
+        saveButton.setOnClickListener {
+            name = nameText.text.toString()
+            breed = breedText.text.toString()
+            ListAdapter.updateList(
+                position,
+                name,
+                breed,
+                Color.rgb(redBar.progress, greenBar.progress, blueBar.progress),
+                species,
+                gender,
+                age,
+                behaviour
+            )
+            Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
+
+            if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                navController.navigate(R.id.action_global_rightFragment)
+            } else if(position == -1) {
+                navController.navigate(R.id.action_global_rightFragment)
+            } else {
+                val myBundle = Bundle()
+                myBundle.putInt(DataStore.LV_POSITION, position)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+                navController.navigate(R.id.action_global_detailsFragment)
+            }
+        }
+
 
     }
 
-    override fun onDestroy() {
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
-        super.onDestroy()
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(DataStore.LV_POSITION, position)
+        super.onSaveInstanceState(outState)
     }
 
     companion object {
