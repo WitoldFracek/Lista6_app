@@ -9,7 +9,7 @@
     tools:context=".DetailsFragment">
 
     <EditText
-        android:id="@+id/details_name"
+        android:id="@+id/edit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -18,7 +18,7 @@
         android:textSize="16sp" />
 
     <EditText
-        android:id="@+id/details_breed"
+        android:id="@+id/edit_breed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -60,7 +60,7 @@
         android:weightSum="11">
 
         <ImageView
-            android:id="@+id/details_image"
+            android:id="@+id/edit_image"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_gravity="center"
@@ -173,7 +173,7 @@
             android:text="Behaviour" />
 
         <RatingBar
-            android:id="@+id/details_bahaviour_bar"
+            android:id="@+id/edit_bahaviour_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -199,7 +199,7 @@
             android:text="Age" />
 
         <SeekBar
-            android:id="@+id/details_age_bar"
+            android:id="@+id/edit_age_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

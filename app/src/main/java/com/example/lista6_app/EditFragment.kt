@@ -26,11 +26,8 @@ class DetailsFragment : Fragment() {
     private var species = ListAdapter.CAT
     private lateinit var image: ImageView
     private lateinit var redBar: SeekBar
-    private var red = 0
     private lateinit var greenBar: SeekBar
-    private var green = 0
     private lateinit var blueBar: SeekBar
-    private var blue = 0
     private lateinit var genderGroup: RadioGroup
     private var gender = 'M'
     private lateinit var behaviourBar: RatingBar
@@ -52,7 +49,7 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        return inflater.inflate(R.layout.fragment_edit, container, false)
     }
 
     @SuppressLint("SetTextI18n")
@@ -61,16 +58,17 @@ class DetailsFragment : Fragment() {
 
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
 
-        nameText = view.findViewById(R.id.details_name)
-        breedText = view.findViewById(R.id.details_breed)
+        nameText = view.findViewById(R.id.edit_name)
+        breedText = view.findViewById(R.id.edit_breed)
         speciesGroup = view.findViewById(R.id.species_radio_group)
-        image = view.findViewById(R.id.details_image)
+        image = view.findViewById(R.id.edit_image)
         redBar = view.findViewById(R.id.red_bar)
         greenBar = view.findViewById(R.id.green_bar)
         blueBar = view.findViewById(R.id.blue_bar)
         genderGroup = view.findViewById(R.id.gender_radio_group)
-        behaviourBar = view.findViewById(R.id.details_bahaviour_bar)
-        ageBar = view.findViewById(R.id.details_age_bar)
+        behaviourBar = view.findViewById(R.id.edit_bahaviour_bar)
+        behaviourBar.numStars = 5
+        ageBar = view.findViewById(R.id.edit_age_bar)
         ageText = view.findViewById(R.id.age_text)
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _ , bundle ->
@@ -120,10 +118,91 @@ class DetailsFragment : Fragment() {
 
             ageBar.progress = ListAdapter.ages[position]
             ageText.text = "Age: ${ListAdapter.ages[position]}"
-
-
         }
 
+        speciesGroup.setOnCheckedChangeListener { _ , checkedId ->
+            when(checkedId) {
+                R.id.radio_cat -> {
+                    species = ListAdapter.CAT
+                    image.setImageResource(R.drawable.cat)
+                }
+                R.id.radio_dog -> {
+                    species = ListAdapter.DOG
+                    image.setImageResource(R.drawable.dog)
+                }
+            }
+        }
+
+        redBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val color = Color.rgb(progress, greenBar.progress, blueBar.progress)
+                image.setBackgroundColor(color)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
+
+        greenBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val color = Color.rgb(redBar.progress, progress, blueBar.progress)
+                image.setBackgroundColor(color)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
+
+        blueBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                val color = Color.rgb(redBar.progress, greenBar.progress, progress)
+                image.setBackgroundColor(color)
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
+
+        genderGroup.setOnCheckedChangeListener { _ , checkedId ->
+            when(checkedId) {
+                R.id.radio_male -> {
+                    gender = 'M'
+                }
+                R.id.radio_female -> {
+                    gender = 'F'
+                }
+            }
+        }
+
+        behaviourBar.setOnRatingBarChangeListener { _, rating, _ ->
+            behaviour = rating
+        }
+
+        ageBar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                age = progress
+                ageText.text = "Age: $age"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
 
 
     }

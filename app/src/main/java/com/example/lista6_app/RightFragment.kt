@@ -59,12 +59,12 @@ class RightFragment : Fragment() {
                 with(myBundle) {
                     putInt(DataStore.LV_POSITION, position)
                     //putInt(DataStore.LV_IMAGE, ListAdapter.images[position])
-                    putString(DataStore.LV_NAME, ListAdapter.names[position])
-                    putString(DataStore.LV_BREED, ListAdapter.breeds[position])
-                    putChar(DataStore.LV_GENDER, ListAdapter.genders[position])
-                    putInt(DataStore.LV_COLOR, ListAdapter.colors[position])
-                    putInt(DataStore.LV_AGE, ListAdapter.ages[position])
-                    putFloat(DataStore.LV_BEHAVIOUR, ListAdapter.behaviours[position])
+//                    putString(DataStore.LV_NAME, ListAdapter.names[position])
+//                    putString(DataStore.LV_BREED, ListAdapter.breeds[position])
+                    //putChar(DataStore.LV_GENDER, ListAdapter.genders[position])
+                    //putInt(DataStore.LV_COLOR, ListAdapter.colors[position])
+//                    putInt(DataStore.LV_AGE, ListAdapter.ages[position])
+//                    putFloat(DataStore.LV_BEHAVIOUR, ListAdapter.behaviours[position])
                 }
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                 navController.navigate(R.id.action_global_detailsFragment)

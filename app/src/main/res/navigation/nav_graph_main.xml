@@ -36,5 +36,5 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.lista6_app.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" /><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/>
+        tools:layout="@layout/fragment_edit" /><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/>
 </navigation>
