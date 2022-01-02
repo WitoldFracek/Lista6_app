@@ -55,6 +55,7 @@ class RightFragment : Fragment() {
                 }
                 val myBundle = Bundle()
                 with(myBundle){
+                    putInt(DataStore.LV_POSITION, position)
                     putInt(DataStore.LV_IMAGE, ListAdapter.images[position])
                     putString(DataStore.LV_NAME, ListAdapter.names[position])
                     putString(DataStore.LV_BREED, ListAdapter.breeds[position])
