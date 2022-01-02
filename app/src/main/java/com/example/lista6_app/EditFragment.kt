@@ -61,8 +61,6 @@ class EditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        MainActivity.backToRight = true
-
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
 
         navController = view.findNavController()

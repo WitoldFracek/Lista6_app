@@ -30,7 +30,11 @@ class MainActivity : AppCompatActivity() {
         val btmNav: BottomNavigationView = findViewById(R.id.bottom_nav)
         when(btmNav.selectedItemId) {
             R.id.btm_center -> super.onBackPressed()
-            R.id.btm_right -> if(!backToRight) {
+            R.id.btm_right -> if(backToRight) {
+                backToRight = false
+                btmNav.selectedItemId = R.id.btm_center
+                btmNav.selectedItemId = R.id.btm_right
+            } else {
                 btmNav.selectedItemId = R.id.btm_center
             }
             else -> btmNav.selectedItemId = R.id.btm_center

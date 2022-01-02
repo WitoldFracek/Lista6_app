@@ -81,8 +81,8 @@ class RightFragment : Fragment() {
                 }
 
                 if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                     MainActivity.backToRight = true
+                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                     navController.navigate(R.id.action_global_detailsFragment)
                 } else {
                     childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
@@ -90,9 +90,30 @@ class RightFragment : Fragment() {
             }
         }
 
+        listView.onItemLongClickListener = object: AdapterView.OnItemLongClickListener {
+            override fun onItemLongClick(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ): Boolean {
+                MainActivity.backToRight = true
+                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                    return false
+                }
+                val myBundle = Bundle()
+                myBundle.putInt(DataStore.LV_POSITION, position)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+                navController.navigate(R.id.action_global_editFragment)
+                return true
+            }
+
+        }
+
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
             fab.setOnClickListener{
+                MainActivity.backToRight = true
                 val myBundle = Bundle()
                 myBundle.putInt(DataStore.LV_POSITION, -1)
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)

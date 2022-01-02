@@ -81,9 +81,9 @@ class DetailsFragment : Fragment() {
 
             val backButton: Button = view.findViewById(R.id.details_back_button)
             backButton.setOnClickListener {
+                MainActivity.backToRight = false
                 navController = view.findNavController()
                 requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
-                MainActivity.backToRight = false
                 navController.navigate(R.id.action_global_rightFragment)
             }
 
@@ -95,8 +95,6 @@ class DetailsFragment : Fragment() {
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
                 navController.navigate(R.id.action_global_editFragment)
             }
-        } else {
-            MainActivity.backToRight = false
         }
 
 
