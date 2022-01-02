@@ -14,6 +14,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(ctx)
     private var myLVItem: LVItem? = null
 
+
     private class LVItem {
         var name: TextView? = null
         var breed: TextView? = null
@@ -59,42 +60,71 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
         val species = mutableListOf(
             CAT,
             CAT,
-            DOG)
+            DOG,
+            CAT,
+            DOG,
+            CAT,
+            DOG
+        )
 
         val names = mutableListOf(
             "Puszek",
             "Neo",
-            "Burek"
+            "Burek",
+            "Stokrotka",
+            "Bacuś",
+            "Zero",
+            "Radioaktywna"
         )
 
         val breeds = mutableListOf(
             "Maine Coon",
             "British Shorthaired",
-            "Golden Retriever"
+            "Golden Retriever",
+            "Dachowiec",
+            "Kundel",
+            "Perski",
+            "Nieznana"
         )
 
         val colors = mutableListOf(
             Color.rgb(194, 67, 27),
             Color.GRAY,
-            Color.rgb(81, 39, 18)
+            Color.rgb(81, 39, 18),
+            Color.rgb(64, 64, 64),
+            Color.rgb(255, 178, 102),
+            Color.rgb(224, 224, 224),
+            Color.rgb(178, 102, 255)
         )
 
         val genders = mutableListOf(
             'F',
             'M',
-            'M'
+            'M',
+            'F',
+            'M',
+            'M',
+            'F'
         )
 
         val ages = mutableListOf(
             10,
             8,
-            5
+            5,
+            4,
+            2,
+            10,
+            3
         )
 
         val behaviours = mutableListOf(
             3.5F,
             4.5F,
-            2F
+            2F,
+            0.5F,
+            5F,
+            4F,
+            4.5F
         )
 
         private fun addToList(name: String?, breed: String?, color: Int?, spec: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
