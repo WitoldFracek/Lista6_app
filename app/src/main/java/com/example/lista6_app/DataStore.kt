@@ -23,6 +23,7 @@ class DataStore {
         val LV_DATA_TO_DETAILS = "lvDataToDetails"
 
         val LV_POSITION = "lvPosition"
+        val LV_SPECIES = "lvSpecies"
         val LV_IMAGE = "lvImage"
         val LV_NAME = "lvName"
         val LV_BREED = "lvBreed"

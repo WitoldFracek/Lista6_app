@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 
@@ -54,9 +55,10 @@ class RightFragment : Fragment() {
                     return
                 }
                 val myBundle = Bundle()
-                with(myBundle){
+                //Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_LONG).show()
+                with(myBundle) {
                     putInt(DataStore.LV_POSITION, position)
-                    putInt(DataStore.LV_IMAGE, ListAdapter.images[position])
+                    //putInt(DataStore.LV_IMAGE, ListAdapter.images[position])
                     putString(DataStore.LV_NAME, ListAdapter.names[position])
                     putString(DataStore.LV_BREED, ListAdapter.breeds[position])
                     putChar(DataStore.LV_GENDER, ListAdapter.genders[position])

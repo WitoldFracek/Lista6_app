@@ -1,5 +1,7 @@
 package com.example.lista6_app
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,15 +19,26 @@ class DetailsFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var nameText: TextView
+    private var name = ""
     private lateinit var breedText: TextView
+    private var breed = ""
     private lateinit var speciesGroup: RadioGroup
+    private var species = ListAdapter.CAT
     private lateinit var image: ImageView
     private lateinit var redBar: SeekBar
+    private var red = 0
     private lateinit var greenBar: SeekBar
+    private var green = 0
     private lateinit var blueBar: SeekBar
+    private var blue = 0
     private lateinit var genderGroup: RadioGroup
-    private lateinit var behaviour: RatingBar
+    private var gender = 'M'
+    private lateinit var behaviourBar: RatingBar
+    private var behaviour = 0F
+    private lateinit var ageText: TextView
     private lateinit var ageBar: SeekBar
+    private var age = 1
+    private var position = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +55,77 @@ class DetailsFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+
+        nameText = view.findViewById(R.id.details_name)
+        breedText = view.findViewById(R.id.details_breed)
+        speciesGroup = view.findViewById(R.id.species_radio_group)
+        image = view.findViewById(R.id.details_image)
+        redBar = view.findViewById(R.id.red_bar)
+        greenBar = view.findViewById(R.id.green_bar)
+        blueBar = view.findViewById(R.id.blue_bar)
+        genderGroup = view.findViewById(R.id.gender_radio_group)
+        behaviourBar = view.findViewById(R.id.details_bahaviour_bar)
+        ageBar = view.findViewById(R.id.details_age_bar)
+        ageText = view.findViewById(R.id.age_text)
+
+        parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _ , bundle ->
+            position = bundle.getInt(DataStore.LV_POSITION, -1)
+            //Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
+            nameText.text = if(position == -1){
+                "Name"
+            } else {
+                ListAdapter.names[position]
+            }
+
+            breedText.text = if(position == -1){
+                "Breed"
+            } else {
+                ListAdapter.breeds[position]
+            }
+
+            speciesGroup.check(
+                if(ListAdapter.species[position] == ListAdapter.CAT){
+                    R.id.radio_cat
+                } else {
+                    R.id.radio_dog
+                })
+
+            image.setImageResource(
+                if(ListAdapter.species[position] == ListAdapter.CAT){
+                    R.drawable.cat
+                } else {
+                    R.drawable.dog
+                }
+            )
+            image.setBackgroundColor(ListAdapter.colors[position])
+
+            redBar.progress = Color.red(ListAdapter.colors[position])
+            greenBar.progress = Color.green(ListAdapter.colors[position])
+            blueBar.progress = Color.blue(ListAdapter.colors[position])
+
+            genderGroup.check(
+                if(ListAdapter.genders[position] == 'M'){
+                    R.id.radio_male
+                } else {
+                    R.id.radio_female
+                }
+            )
+
+            behaviourBar.rating = ListAdapter.behaviours[position]
+
+            ageBar.progress = ListAdapter.ages[position]
+            ageText.text = "Age: ${ListAdapter.ages[position]}"
+
+
+        }
+
+
+
     }
 
     override fun onDestroy() {

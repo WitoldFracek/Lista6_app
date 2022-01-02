@@ -21,7 +21,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
     }
 
     override fun getCount(): Int {
-        return images.size
+        return species.size
     }
 
     override fun getItem(position: Int): Any {
@@ -47,16 +47,19 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
 
         myLVItem!!.name?.text = names[position]
         myLVItem!!.breed?.text = breeds[position]
-        myLVItem!!.image?.setImageResource(images[position])
+        myLVItem!!.image?.setImageResource(if(species[position] == CAT) {R.drawable.cat} else {R.drawable.dog})
         myLVItem!!.image?.setBackgroundColor(colors[position])
         return liv
     }
 
     companion object{
-        val images = mutableListOf(
-            R.drawable.cat,
-            R.drawable.cat,
-            R.drawable.dog)
+        const val CAT = 0
+        const val DOG = 1
+
+        val species = mutableListOf(
+            CAT,
+            CAT,
+            DOG)
 
         val names = mutableListOf(
             "Puszek",
@@ -94,26 +97,19 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
             2F
         )
 
-        const val CAT = 0
-        const val DOG = 1
-
-        private fun addToList(name: String?, breed: String?, color: Int?, species: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
+        private fun addToList(name: String?, breed: String?, color: Int?, spec: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
             names.add(name!!)
             breeds.add(breed!!)
             colors.add(color!!)
             genders.add(gender!!)
             ages.add(age!!)
             behaviours.add(behaviour!!)
-            if(species == CAT){
-                images.add(R.drawable.cat)
-            } else {
-                images.add(R.drawable.dog)
-            }
+            species.add(spec!!)
         }
 
-        fun updateList(position: Int, name: String?, breed: String?, color: Int?, species: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
+        fun updateList(position: Int, name: String?, breed: String?, color: Int?, spec: Int? = CAT, gender: Char? = 'M', age: Int? = 1, behaviour: Float? = 3F){
             if(position == -1){
-                addToList(name, breed, color, species, gender, age, behaviour)
+                addToList(name, breed, color, spec, gender, age, behaviour)
                 return
             }
             names[position] = name!!
@@ -122,11 +118,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
             genders[position] = gender!!
             ages[position] = age!!
             behaviours[position] = behaviour!!
-            images[position] = if(species == CAT){
-                R.drawable.cat
-            } else {
-                R.drawable.dog
-            }
+            species[position] = spec!!
         }
 
     }
