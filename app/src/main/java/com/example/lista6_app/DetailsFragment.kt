@@ -1,6 +1,7 @@
 package com.example.lista6_app
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,7 +26,7 @@ class DetailsFragment : Fragment() {
     private lateinit var image: ImageView
     private lateinit var behaviourBar: RatingBar
     private lateinit var ageText: TextView
-    private var position = -1
+    private var position = 0
 
     private lateinit var navController: NavController
 
@@ -59,25 +60,26 @@ class DetailsFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _, bundle ->
             position = bundle.getInt(DataStore.LV_POSITION, 0)
-
-            nameText.text = "Name: ${ListAdapter.names[position]}"
-            breedText.text = "Breed: ${ListAdapter.breeds[position]}"
-            genderText.text = if(ListAdapter.genders[position] == 'M') {
-                "Male"
-            } else {
-                "Female"
-            }
-            if(ListAdapter.species[position] == ListAdapter.CAT){
-                speciesText.text = "Cat"
-                image.setImageResource(R.drawable.cat)
-            } else {
-                speciesText.text = "Dog"
-                image.setImageResource(R.drawable.dog)
-            }
-            image.setBackgroundColor(ListAdapter.colors[position])
-            ageText.text = "Age: ${ListAdapter.ages[position]}"
-            behaviourBar.rating = ListAdapter.behaviours[position]
+            modify()
+//            nameText.text = "Name: ${ListAdapter.names[position]}"
+//            breedText.text = "Breed: ${ListAdapter.breeds[position]}"
+//            genderText.text = if(ListAdapter.genders[position] == 'M') {
+//                "Male"
+//            } else {
+//                "Female"
+//            }
+//            if(ListAdapter.species[position] == ListAdapter.CAT){
+//                speciesText.text = "Cat"
+//                image.setImageResource(R.drawable.cat)
+//            } else {
+//                speciesText.text = "Dog"
+//                image.setImageResource(R.drawable.dog)
+//            }
+//            image.setBackgroundColor(ListAdapter.colors[position])
+//            ageText.text = "Age: ${ListAdapter.ages[position]}"
+//            behaviourBar.rating = ListAdapter.behaviours[position]
         }
+        modify()
 
         navController = view.findNavController()
 
@@ -88,7 +90,38 @@ class DetailsFragment : Fragment() {
             navController.navigate(R.id.action_global_rightFragment)
         }
 
+        val modifyButton: Button = view.findViewById(R.id.details_modify_button)
+        modifyButton.setOnClickListener {
+            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                val myBundle = Bundle()
+                myBundle.putInt(DataStore.LV_POSITION, position)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+                navController.navigate(R.id.action_global_editFragment)
+            }
 
+        }
+
+
+    }
+
+    private fun modify(){
+        nameText.text = "Name: ${ListAdapter.names[position]}"
+        breedText.text = "Breed: ${ListAdapter.breeds[position]}"
+        genderText.text = if(ListAdapter.genders[position] == 'M') {
+            "Male"
+        } else {
+            "Female"
+        }
+        if(ListAdapter.species[position] == ListAdapter.CAT){
+            speciesText.text = "Cat"
+            image.setImageResource(R.drawable.cat)
+        } else {
+            speciesText.text = "Dog"
+            image.setImageResource(R.drawable.dog)
+        }
+        image.setBackgroundColor(ListAdapter.colors[position])
+        ageText.text = "Age: ${ListAdapter.ages[position]}"
+        behaviourBar.rating = ListAdapter.behaviours[position]
     }
 
     companion object {

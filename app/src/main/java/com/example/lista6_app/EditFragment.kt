@@ -71,7 +71,7 @@ class EditFragment : Fragment() {
         ageBar = view.findViewById(R.id.edit_age_bar)
         ageText = view.findViewById(R.id.age_text)
 
-        parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _ , bundle ->
+        parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_EDIT, viewLifecycleOwner) { _ , bundle ->
             position = bundle.getInt(DataStore.LV_POSITION, -1)
             //Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
             nameText.text = if(position == -1){

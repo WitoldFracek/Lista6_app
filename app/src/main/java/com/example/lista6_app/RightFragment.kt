@@ -1,5 +1,6 @@
 package com.example.lista6_app
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,6 +28,12 @@ class RightFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
     }
 
     override fun onCreateView(
@@ -67,10 +74,15 @@ class RightFragment : Fragment() {
 //                    putInt(DataStore.LV_AGE, ListAdapter.ages[position])
 //                    putFloat(DataStore.LV_BEHAVIOUR, ListAdapter.behaviours[position])
                 }
-                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-                requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
-                MainActivity.backToRight = true
-                navController.navigate(R.id.action_global_detailsFragment)
+
+                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+                    requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+                    MainActivity.backToRight = true
+                    navController.navigate(R.id.action_global_detailsFragment)
+                } else {
+                    childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+                }
             }
 
         }
