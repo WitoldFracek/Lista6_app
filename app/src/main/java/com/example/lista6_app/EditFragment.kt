@@ -56,6 +56,8 @@ class EditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        MainActivity.backToRight = true
+
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
 
         nameText = view.findViewById(R.id.edit_name)
@@ -86,38 +88,48 @@ class EditFragment : Fragment() {
                 ListAdapter.breeds[position]
             }
 
-            speciesGroup.check(
-                if(ListAdapter.species[position] == ListAdapter.CAT){
-                    R.id.radio_cat
-                } else {
-                    R.id.radio_dog
-                })
+            if(position == -1){
+                speciesGroup.check(R.id.radio_cat)
+                image.setImageResource(R.drawable.cat)
+                image.setBackgroundColor(Color.WHITE)
+                redBar.progress = 0
+                greenBar.progress = 0
+                blueBar.progress = 0
+                genderGroup.check(R.id.radio_male)
+                behaviourBar.rating = 0F
+                ageBar.progress = 1
+                ageText.text = "Age: 1"
+            } else {
+                speciesGroup.check(
+                    if(ListAdapter.species[position] == ListAdapter.CAT){
+                        R.id.radio_cat
+                    } else {
+                        R.id.radio_dog
+                    }
+                )
 
-            image.setImageResource(
-                if(ListAdapter.species[position] == ListAdapter.CAT){
-                    R.drawable.cat
-                } else {
-                    R.drawable.dog
-                }
-            )
-            image.setBackgroundColor(ListAdapter.colors[position])
-
-            redBar.progress = Color.red(ListAdapter.colors[position])
-            greenBar.progress = Color.green(ListAdapter.colors[position])
-            blueBar.progress = Color.blue(ListAdapter.colors[position])
-
-            genderGroup.check(
-                if(ListAdapter.genders[position] == 'M'){
-                    R.id.radio_male
-                } else {
-                    R.id.radio_female
-                }
-            )
-
-            behaviourBar.rating = ListAdapter.behaviours[position]
-
-            ageBar.progress = ListAdapter.ages[position]
-            ageText.text = "Age: ${ListAdapter.ages[position]}"
+                image.setImageResource(
+                    if(ListAdapter.species[position] == ListAdapter.CAT){
+                        R.drawable.cat
+                    } else {
+                        R.drawable.dog
+                    }
+                )
+                image.setBackgroundColor(ListAdapter.colors[position])
+                redBar.progress = Color.red(ListAdapter.colors[position])
+                greenBar.progress = Color.green(ListAdapter.colors[position])
+                blueBar.progress = Color.blue(ListAdapter.colors[position])
+                genderGroup.check(
+                    if(ListAdapter.genders[position] == 'M'){
+                        R.id.radio_male
+                    } else {
+                        R.id.radio_female
+                    }
+                )
+                behaviourBar.rating = ListAdapter.behaviours[position]
+                ageBar.progress = ListAdapter.ages[position]
+                ageText.text = "Age: ${ListAdapter.ages[position]}"
+            }
         }
 
         speciesGroup.setOnCheckedChangeListener { _ , checkedId ->

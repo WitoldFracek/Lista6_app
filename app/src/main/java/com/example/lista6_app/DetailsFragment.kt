@@ -57,51 +57,49 @@ class DetailsFragment : Fragment() {
         image = view.findViewById(R.id.details_image)
         behaviourBar = view.findViewById(R.id.details_behaviour_bar)
         behaviourBar.isEnabled = false
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+        if(savedInstanceState != null) {
+            position = savedInstanceState.getInt(DataStore.LV_POSITION, 0)
+        }
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _, bundle ->
             position = bundle.getInt(DataStore.LV_POSITION, 0)
             modify()
-//            nameText.text = "Name: ${ListAdapter.names[position]}"
-//            breedText.text = "Breed: ${ListAdapter.breeds[position]}"
-//            genderText.text = if(ListAdapter.genders[position] == 'M') {
-//                "Male"
-//            } else {
-//                "Female"
-//            }
-//            if(ListAdapter.species[position] == ListAdapter.CAT){
-//                speciesText.text = "Cat"
-//                image.setImageResource(R.drawable.cat)
-//            } else {
-//                speciesText.text = "Dog"
-//                image.setImageResource(R.drawable.dog)
-//            }
-//            image.setBackgroundColor(ListAdapter.colors[position])
-//            ageText.text = "Age: ${ListAdapter.ages[position]}"
-//            behaviourBar.rating = ListAdapter.behaviours[position]
         }
         modify()
 
-        navController = view.findNavController()
 
-        val backButton: Button = view.findViewById(R.id.details_back_button)
-        backButton.setOnClickListener {
-            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
-            MainActivity.backToRight = false
-            navController.navigate(R.id.action_global_rightFragment)
-        }
 
-        val modifyButton: Button = view.findViewById(R.id.details_modify_button)
-        modifyButton.setOnClickListener {
-            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+
+            val backButton: Button = view.findViewById(R.id.details_back_button)
+            backButton.setOnClickListener {
+                navController = view.findNavController()
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+                MainActivity.backToRight = false
+                navController.navigate(R.id.action_global_rightFragment)
+            }
+
+            val modifyButton: Button = view.findViewById(R.id.details_modify_button)
+            modifyButton.setOnClickListener {
+                navController = view.findNavController()
                 val myBundle = Bundle()
                 myBundle.putInt(DataStore.LV_POSITION, position)
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
                 navController.navigate(R.id.action_global_editFragment)
             }
-
+        } else {
+            MainActivity.backToRight = false
+            requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
         }
 
 
+
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(DataStore.LV_POSITION, position)
+        super.onSaveInstanceState(outState)
     }
 
     private fun modify(){

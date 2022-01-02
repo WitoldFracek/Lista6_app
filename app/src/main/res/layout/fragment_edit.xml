@@ -214,22 +214,22 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/edit_save_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@string/save" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/edit_cancel_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:text="@android:string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

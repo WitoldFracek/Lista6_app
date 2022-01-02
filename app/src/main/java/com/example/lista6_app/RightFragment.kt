@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -28,12 +29,6 @@ class RightFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
-            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                View.VISIBLE
-            } else {
-                View.GONE
-            }
     }
 
     override fun onCreateView(
@@ -45,6 +40,13 @@ class RightFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility =
+            if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
 
         val listView: ListView = view.findViewById(R.id.list_view)
         val adapter = ListAdapter(view.context)
@@ -63,16 +65,8 @@ class RightFragment : Fragment() {
                     return
                 }
                 val myBundle = Bundle()
-                //Toast.makeText(requireContext(), position.toString(), Toast.LENGTH_LONG).show()
                 with(myBundle) {
                     putInt(DataStore.LV_POSITION, position)
-                    //putInt(DataStore.LV_IMAGE, ListAdapter.images[position])
-//                    putString(DataStore.LV_NAME, ListAdapter.names[position])
-//                    putString(DataStore.LV_BREED, ListAdapter.breeds[position])
-                    //putChar(DataStore.LV_GENDER, ListAdapter.genders[position])
-                    //putInt(DataStore.LV_COLOR, ListAdapter.colors[position])
-//                    putInt(DataStore.LV_AGE, ListAdapter.ages[position])
-//                    putFloat(DataStore.LV_BEHAVIOUR, ListAdapter.behaviours[position])
                 }
 
                 if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -84,7 +78,17 @@ class RightFragment : Fragment() {
                     childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                 }
             }
+        }
 
+        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
+            fab.setOnClickListener{
+                val myBundle = Bundle()
+                myBundle.putInt(DataStore.LV_POSITION, -1)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+                navController.navigate(R.id.action_global_editFragment)
+
+            }
         }
     }
 
