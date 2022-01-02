@@ -82,7 +82,7 @@ class ListAdapter(ctx: Context) : BaseAdapter() {
         val genders = mutableListOf(
             'F',
             'M',
-            'F'
+            'M'
         )
 
         val ages = mutableListOf(

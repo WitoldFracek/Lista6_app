@@ -10,6 +10,7 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -67,6 +68,8 @@ class RightFragment : Fragment() {
 //                    putFloat(DataStore.LV_BEHAVIOUR, ListAdapter.behaviours[position])
                 }
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+                requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
+                MainActivity.backToRight = true
                 navController.navigate(R.id.action_global_detailsFragment)
             }
 

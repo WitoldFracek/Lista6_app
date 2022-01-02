@@ -33,8 +33,13 @@
         app:launchSingleTop ="true"
         app:popUpTo="@id/homeFragment"/>
     <fragment
+        android:id="@+id/editFragment"
+        android:name="com.example.lista6_app.EditFragment"
+        android:label="EditFragment" />
+    <fragment
         android:id="@+id/detailsFragment"
         android:name="com.example.lista6_app.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_edit" /><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/>
+        tools:layout="@layout/fragment_details" /><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/><action android:id="@+id/action_global_editFragment" app:destination="@id/editFragment"/>
+
 </navigation>

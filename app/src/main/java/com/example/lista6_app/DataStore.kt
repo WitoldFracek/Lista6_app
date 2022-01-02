@@ -21,6 +21,7 @@ class DataStore {
         val DATA_TO_LEFT = "dataToLeft"
 
         val LV_DATA_TO_DETAILS = "lvDataToDetails"
+        val LV_DATA_TO_EDIT = "lvDataToEdit"
 
         val LV_POSITION = "lvPosition"
         val LV_SPECIES = "lvSpecies"
