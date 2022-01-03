@@ -10,7 +10,12 @@
         android:id="@+id/invitation_list"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
         android:layout_weight="1"
+        android:background="@color/gray"
+        android:backgroundTint="#7C7777"
         android:spinnerMode="dropdown"
         android:textAlignment="center" />
 
@@ -18,12 +23,13 @@
         android:id="@+id/image_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         android:layout_weight="1"
         android:columnWidth="100dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
+        android:listSelector="@color/gray"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="10dp"
-        android:listSelector="@color/gray"/>
+        android:verticalSpacing="10dp" />
 </LinearLayout>
