@@ -110,16 +110,13 @@ class RightFragment : Fragment() {
 
         }
 
-        if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
-            fab.setOnClickListener{
-                MainActivity.backToRight = true
-                val myBundle = Bundle()
-                myBundle.putInt(DataStore.LV_POSITION, -1)
-                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
-                navController.navigate(R.id.action_global_editFragment)
-
-            }
+        val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
+        fab.setOnClickListener{
+            MainActivity.backToRight = true
+            val myBundle = Bundle()
+            myBundle.putInt(DataStore.LV_POSITION, -1)
+            parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+            navController.navigate(R.id.action_global_editFragment)
         }
     }
 
