@@ -1,5 +1,6 @@
 package com.example.lista6_app
 
+import android.content.ClipData
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -36,7 +37,9 @@ class LeftFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.VISIBLE
+        val btmNav = requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)
+        btmNav.visibility = View.VISIBLE
+        //btmNav.selectedItemId = btmNav.menu.findItem(R.id.btm_left).itemId
 
         lateinit var invitation: String
 
@@ -107,8 +110,6 @@ class LeftFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(DataStore.DATA_TO_LEFT, viewLifecycleOwner) {key, bundle ->
             val index = bundle.getInt(DataStore.IMAGE_INDEX_KEY, 0)
         }
-
-
     }
 
     companion object {
