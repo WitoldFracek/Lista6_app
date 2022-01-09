@@ -4,13 +4,17 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -64,6 +68,28 @@ class RightFragment : Fragment() {
         listView.adapter = adapter
 
         navController = view.findNavController()
+
+//        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
+//        val adapter = ListHolderAdapter()
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        recyclerView.adapter = adapter
+//
+//        recyclerView.addOnItemTouchListener(object: RecyclerView.OnItemTouchListener{
+//            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+//                TODO("Not yet implemented")
+//            }
+//
+//            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+//                TODO("Not yet implemented")
+//            }
+//
+//        })
+
+
 
         listView.onItemClickListener = object: AdapterView.OnItemClickListener {
             override fun onItemClick(

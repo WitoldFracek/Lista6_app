@@ -1,15 +1,18 @@
 package com.example.lista6_app
 
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Bundle
+import android.view.*
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val image: ImageView = view.findViewById(R.id.list_elem_image)
         val nameText: TextView = view.findViewById(R.id.list_elem_main_text)
         val breedText: TextView = view.findViewById(R.id.list_elem_additional_text)
@@ -21,7 +24,7 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when(ListAdapter.species[position]){
+        when(ListAdapter.species[position]) {
             ListAdapter.CAT -> R.drawable.cat
             else -> R.drawable.dog
         }.also { holder.image.setImageResource(it) }
