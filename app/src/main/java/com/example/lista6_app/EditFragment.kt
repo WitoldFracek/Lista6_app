@@ -258,6 +258,9 @@ class EditFragment : Fragment() {
             if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 navController.navigate(R.id.action_global_rightFragment)
             } else if(position == -1) {
+                val bundle = Bundle()
+                bundle.putString(DataStore.LV_DATA_CHANGED, "changed")
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_RIGHT, bundle)
                 navController.navigate(R.id.action_global_rightFragment)
             } else {
                 val myBundle = Bundle()

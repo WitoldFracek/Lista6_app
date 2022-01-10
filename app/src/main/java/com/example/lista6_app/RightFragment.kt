@@ -25,6 +25,9 @@ class RightFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: RecyclerView.Adapter<ListHolderAdapter.ViewHolder>
+
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,14 +36,20 @@ class RightFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_right, container, false)
+        recyclerView = view.findViewById(R.id.recycler_view)
+        adapter = ListHolderAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = adapter
 
-        return inflater.inflate(R.layout.fragment_right, container, false)
+        return view
     }
 
     override fun onResume() {
@@ -63,78 +72,68 @@ class RightFragment : Fragment() {
                 View.GONE
             }
 
-        val listView: ListView = view.findViewById(R.id.list_view)
-        val adapter = ListAdapter(view.context)
-        listView.adapter = adapter
+//        val listView: ListView = view.findViewById(R.id.list_view)
+//        val adapter = ListAdapter(view.context)
+//        listView.adapter = adapter
 
         navController = view.findNavController()
+
+        parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
+            val changed = bundle.getString(DataStore.LV_DATA_CHANGED, "err")
+            if(changed == "changed"){
+                adapter.notifyDataSetChanged()
+            }
+        }
 
 //        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
 //        val adapter = ListHolderAdapter()
 //        recyclerView.layoutManager = LinearLayoutManager(context)
 //        recyclerView.adapter = adapter
+
+//        listView.onItemClickListener = object: AdapterView.OnItemClickListener {
+//            override fun onItemClick(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//                if(view == null){
+//                    return
+//                }
+//                val myBundle = Bundle()
+//                with(myBundle) {
+//                    putInt(DataStore.LV_POSITION, position)
+//                }
 //
-//        recyclerView.addOnItemTouchListener(object: RecyclerView.OnItemTouchListener{
-//            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-//                TODO("Not yet implemented")
+//                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+//                    MainActivity.backToRight = true
+//                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+//                    navController.navigate(R.id.action_global_detailsFragment)
+//                } else {
+//                    childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
+//                }
+//            }
+//        }
+//
+//        listView.onItemLongClickListener = object: AdapterView.OnItemLongClickListener {
+//            override fun onItemLongClick(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ): Boolean {
+//                MainActivity.backToRight = true
+//                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+//                    return false
+//                }
+//                val myBundle = Bundle()
+//                myBundle.putInt(DataStore.LV_POSITION, position)
+//                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+//                navController.navigate(R.id.action_global_editFragment)
+//                return true
 //            }
 //
-//            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
-//                TODO("Not yet implemented")
-//            }
-//
-//            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-//                TODO("Not yet implemented")
-//            }
-//
-//        })
-
-
-
-        listView.onItemClickListener = object: AdapterView.OnItemClickListener {
-            override fun onItemClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                if(view == null){
-                    return
-                }
-                val myBundle = Bundle()
-                with(myBundle) {
-                    putInt(DataStore.LV_POSITION, position)
-                }
-
-                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    MainActivity.backToRight = true
-                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-                    navController.navigate(R.id.action_global_detailsFragment)
-                } else {
-                    childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-                }
-            }
-        }
-
-        listView.onItemLongClickListener = object: AdapterView.OnItemLongClickListener {
-            override fun onItemLongClick(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ): Boolean {
-                MainActivity.backToRight = true
-                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    return false
-                }
-                val myBundle = Bundle()
-                myBundle.putInt(DataStore.LV_POSITION, position)
-                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
-                navController.navigate(R.id.action_global_editFragment)
-                return true
-            }
-
-        }
+//        }
 
         val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
         fab.setOnClickListener{

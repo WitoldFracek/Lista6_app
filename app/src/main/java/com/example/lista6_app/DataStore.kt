@@ -22,6 +22,7 @@ class DataStore {
 
         val LV_DATA_TO_DETAILS = "lvDataToDetails"
         val LV_DATA_TO_EDIT = "lvDataToEdit"
+        val LV_DATA_TO_RIGHT = "lvDataTORight"
 
         val LV_POSITION = "lvPosition"
         val LV_SPECIES = "lvSpecies"
@@ -32,6 +33,7 @@ class DataStore {
         val LV_COLOR = "lvColor"
         val LV_AGE = "lvAge"
         val LV_BEHAVIOUR = "lvBehaviour"
+        val LV_DATA_CHANGED = "updateChangedData"
 
 
     }

@@ -8,6 +8,8 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.findFragment
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 
 class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
@@ -16,6 +18,38 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
         val image: ImageView = view.findViewById(R.id.list_elem_image)
         val nameText: TextView = view.findViewById(R.id.list_elem_main_text)
         val breedText: TextView = view.findViewById(R.id.list_elem_additional_text)
+
+        init {
+            view.setOnClickListener {
+                val navController = view.findNavController()
+                val rootFragment: RightFragment = it.findFragment()
+                val pos = adapterPosition
+                val bundle = Bundle()
+                bundle.putInt(DataStore.LV_POSITION, pos)
+                if(rootFragment.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                    navController.navigate(R.id.action_global_detailsFragment)
+                    rootFragment.parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
+                } else {
+                    rootFragment.childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
+                }
+            }
+
+            view.setOnLongClickListener {
+                var ret = true
+                val navController = view.findNavController()
+                val rootFragment: RightFragment = it.findFragment()
+                if(rootFragment.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                    ret = false
+                }
+                val pos = adapterPosition
+                val bundle = Bundle()
+                bundle.putInt(DataStore.LV_POSITION, pos)
+                rootFragment.parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, bundle)
+                navController.navigate(R.id.action_global_editFragment)
+                ret
+            }
+        }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
