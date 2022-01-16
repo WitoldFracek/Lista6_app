@@ -2,11 +2,8 @@ package com.example.lista6_app
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
@@ -49,6 +46,8 @@ class RightFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
+        registerForContextMenu(view)
+
         return view
     }
 
@@ -80,60 +79,12 @@ class RightFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
             val changed = bundle.getString(DataStore.LV_DATA_CHANGED, "err")
-            if(changed == "changed"){
+            if(changed == "changed") {
                 adapter.notifyDataSetChanged()
             }
         }
 
-//        val recyclerView: RecyclerView = view.findViewById(R.id.recycler_view)
-//        val adapter = ListHolderAdapter()
-//        recyclerView.layoutManager = LinearLayoutManager(context)
-//        recyclerView.adapter = adapter
-
-//        listView.onItemClickListener = object: AdapterView.OnItemClickListener {
-//            override fun onItemClick(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                if(view == null){
-//                    return
-//                }
-//                val myBundle = Bundle()
-//                with(myBundle) {
-//                    putInt(DataStore.LV_POSITION, position)
-//                }
-//
-//                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-//                    MainActivity.backToRight = true
-//                    parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-//                    navController.navigate(R.id.action_global_detailsFragment)
-//                } else {
-//                    childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
-//                }
-//            }
-//        }
-//
-//        listView.onItemLongClickListener = object: AdapterView.OnItemLongClickListener {
-//            override fun onItemLongClick(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ): Boolean {
-//                MainActivity.backToRight = true
-//                if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-//                    return false
-//                }
-//                val myBundle = Bundle()
-//                myBundle.putInt(DataStore.LV_POSITION, position)
-//                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
-//                navController.navigate(R.id.action_global_editFragment)
-//                return true
-//            }
-//
-//        }
+//        requireActivity().registerForContextMenu(recyclerView)
 
         val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
         fab.setOnClickListener{
@@ -143,6 +94,24 @@ class RightFragment : Fragment() {
             parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
             navController.navigate(R.id.action_global_editFragment)
         }
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        val menuInflater = requireActivity().menuInflater
+        menuInflater.inflate(R.menu.database_options_context_menu, menu)
+        super.onCreateContextMenu(menu, v, menuInfo)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        Toast.makeText(requireContext(), "DELETE", Toast.LENGTH_SHORT).show()
+        when(item.itemId) {
+            R.id.db_delete -> Toast.makeText(requireContext(), "DELETE", Toast.LENGTH_SHORT).show()
+        }
+        return super.onContextItemSelected(item)
     }
 
     companion object {

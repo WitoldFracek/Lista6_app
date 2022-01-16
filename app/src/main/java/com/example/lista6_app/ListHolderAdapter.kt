@@ -1,5 +1,6 @@
 package com.example.lista6_app
 
+import android.content.ClipData
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -33,23 +34,7 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
                     rootFragment.childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
                 }
             }
-
-            view.setOnLongClickListener {
-                var ret = true
-                val navController = view.findNavController()
-                val rootFragment: RightFragment = it.findFragment()
-                if(rootFragment.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                    ret = false
-                }
-                val pos = adapterPosition
-                val bundle = Bundle()
-                bundle.putInt(DataStore.LV_POSITION, pos)
-                rootFragment.parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, bundle)
-                navController.navigate(R.id.action_global_editFragment)
-                ret
-            }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -70,4 +55,5 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
     override fun getItemCount(): Int {
         return ListAdapter.species.size
     }
+
 }
