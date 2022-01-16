@@ -28,6 +28,7 @@ class RightFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var animalVM: AnimalViewModel
+    private val adapter = ListHolderAdapter()
 
     lateinit var navController: NavController
 
@@ -44,7 +45,6 @@ class RightFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_right, container, false)
-        val adapter = ListHolderAdapter()
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
@@ -85,6 +85,9 @@ class RightFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
             val changed = bundle.getString(DataStore.LV_DATA_CHANGED, "err")
+            if(changed == "changed"){
+                adapter.notifyDataSetChanged()
+            }
         }
 
         val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)

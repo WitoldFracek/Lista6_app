@@ -10,4 +10,8 @@ class AnimalRepository(private val animalDao: AnimalDao) {
         animalDao.addAnimal(animal)
     }
 
+    fun getAnimalWithId(id :Int): Animal{
+        return animalDao.getAnimalWithId(id)
+    }
+
 }

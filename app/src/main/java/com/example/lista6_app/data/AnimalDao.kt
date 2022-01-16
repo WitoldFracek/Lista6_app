@@ -14,4 +14,7 @@ interface AnimalDao {
 
     @Query("SELECT * FROM animalTable ORDER BY id ASC")
     fun readAllData(): LiveData<List<Animal>>
+
+    @Query("SELECT * FROM animalTable WHERE id = :id")
+    fun getAnimalWithId(id: Int): Animal
 }

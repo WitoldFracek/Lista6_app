@@ -2,6 +2,7 @@ package com.example.lista6_app
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,8 +12,11 @@ import android.widget.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.lista6_app.data.AnimalViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.lista6_app.data.CAT
+import com.example.lista6_app.data.DOG
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -20,6 +24,8 @@ private const val ARG_PARAM2 = "param2"
 class DetailsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
+
+    private val args by navArgs<DetailsFragmentArgs>()
 
     private lateinit var nameText: TextView
     private lateinit var breedText: TextView
@@ -58,11 +64,35 @@ class DetailsFragment : Fragment() {
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
 
         nameText = view.findViewById(R.id.details_name)
+        nameText.text = args.currentAnimal.name
+
         breedText = view.findViewById(R.id.details_breed)
+        breedText.text = args.currentAnimal.breed
+
         speciesText = view.findViewById(R.id.details_species)
+        speciesText.text = if(args.currentAnimal.species == CAT) {
+            "Cat"
+        } else {
+            "Dog"
+        }
+
         ageText = view.findViewById(R.id.details_age)
+        ageText.text = "Age: ${args.currentAnimal.age}"
+
         genderText = view.findViewById(R.id.details_gender)
+        genderText.text = if(args.currentAnimal.gender == 'M'){
+            "Male"
+        } else {
+            "Female"
+        }
+
         image = view.findViewById(R.id.details_image)
+        image.setImageResource(if(args.currentAnimal.species == CAT){
+            R.drawable.cat
+        } else {
+            R.drawable.dog
+        })
+        image.setBackgroundColor(Color.rgb(args.currentAnimal.red, args.currentAnimal.green, args.currentAnimal.blue))
         behaviourBar = view.findViewById(R.id.details_behaviour_bar)
         behaviourBar.isEnabled = false
         if(savedInstanceState != null) {
@@ -113,6 +143,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun modify(){
+        val animalVM: AnimalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
         nameText.text = "Name: ${ListAdapter.names[position]}"
         breedText.text = "Breed: ${ListAdapter.breeds[position]}"
         genderText.text = if(ListAdapter.genders[position] == 'M') {

@@ -40,6 +40,10 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.lista6_app.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" /><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/><action android:id="@+id/action_global_editFragment" app:destination="@id/editFragment"/>
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="currentAnimal"
+            app:argType="com.example.lista6_app.data.Animal" />
+    </fragment><action android:id="@+id/action_global_detailsFragment" app:destination="@id/detailsFragment"/><action android:id="@+id/action_global_editFragment" app:destination="@id/editFragment"/>
 
 </navigation>
