@@ -8,8 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.lista6_app.data.AnimalViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -29,6 +31,7 @@ class DetailsFragment : Fragment() {
     private var position = 0
 
     private lateinit var navController: NavController
+    private lateinit var animalVM: AnimalViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +45,9 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        animalVM = ViewModelProvider(this).get(AnimalViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 

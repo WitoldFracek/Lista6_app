@@ -6,7 +6,7 @@ class AnimalRepository(private val animalDao: AnimalDao) {
 
     val readAllData: LiveData<List<Animal>> = animalDao.readAllData()
 
-    suspend fun addAnimal(animal: Animal) {
+    fun addAnimal(animal: Animal) {
         animalDao.addAnimal(animal)
     }
 

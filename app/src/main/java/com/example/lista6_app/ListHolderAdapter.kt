@@ -3,6 +3,7 @@ package com.example.lista6_app
 import android.content.ClipData
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
@@ -10,10 +11,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.findFragment
+import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lista6_app.data.Animal
+import com.example.lista6_app.data.CAT
+import com.example.lista6_app.data.DOG
 
-class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
+class ListHolderAdapter(var dataList: LiveData<List<Animal>>) : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val image: ImageView = view.findViewById(R.id.list_elem_image)
@@ -43,17 +48,21 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        when(ListAdapter.species[position]) {
-            ListAdapter.CAT -> R.drawable.cat
+        val value = dataList.value ?: return
+
+        val animal = value[position]
+
+        when(animal.species) {
+            CAT -> R.drawable.cat
             else -> R.drawable.dog
         }.also { holder.image.setImageResource(it) }
-        holder.image.setBackgroundColor(ListAdapter.colors[position])
-        holder.nameText.text = ListAdapter.names[position]
-        holder.breedText.text = ListAdapter.breeds[position]
+        holder.image.setBackgroundColor(Color.rgb(animal.red, animal.green, animal.blue))
+        holder.nameText.text = animal.name
+        holder.breedText.text = animal.breed
     }
 
     override fun getItemCount(): Int {
-        return ListAdapter.species.size
+        return dataList.value?.size ?: 0
     }
 
 }

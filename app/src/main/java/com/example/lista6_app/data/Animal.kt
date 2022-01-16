@@ -19,4 +19,4 @@ data class Animal (
     val gender: Char,
     val behaviour: Float,
     val age: Int
-        )
+    )

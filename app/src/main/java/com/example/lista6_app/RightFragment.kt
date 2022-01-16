@@ -8,10 +8,12 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lista6_app.data.AnimalViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -23,6 +25,7 @@ class RightFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var animalVM: AnimalViewModel
     private lateinit var adapter: RecyclerView.Adapter<ListHolderAdapter.ViewHolder>
 
     lateinit var navController: NavController
@@ -33,6 +36,8 @@ class RightFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+        animalVM = ViewModelProvider(this).get(AnimalViewModel::class.java)
+        adapter = ListHolderAdapter(animalVM.readAllData)
 
     }
 
@@ -42,9 +47,13 @@ class RightFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_right, container, false)
         recyclerView = view.findViewById(R.id.recycler_view)
-        adapter = ListHolderAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
+
+        val values = animalVM.readAllData.value
+        if(values != null){
+            Toast.makeText(requireContext(), values.size.toString(), Toast.LENGTH_SHORT).show()
+        }
 
         registerForContextMenu(view)
 
@@ -71,10 +80,6 @@ class RightFragment : Fragment() {
                 View.GONE
             }
 
-//        val listView: ListView = view.findViewById(R.id.list_view)
-//        val adapter = ListAdapter(view.context)
-//        listView.adapter = adapter
-
         navController = view.findNavController()
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
@@ -83,8 +88,6 @@ class RightFragment : Fragment() {
                 adapter.notifyDataSetChanged()
             }
         }
-
-//        requireActivity().registerForContextMenu(recyclerView)
 
         val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
         fab.setOnClickListener{

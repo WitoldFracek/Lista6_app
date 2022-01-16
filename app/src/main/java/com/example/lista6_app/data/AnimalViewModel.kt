@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class AnimalViewModel(aplication: Application): AndroidViewModel(aplication) {
 
-    private val readAllData: LiveData<List<Animal>>
+    public val readAllData: LiveData<List<Animal>>
     private val repository: AnimalRepository
 
     init {

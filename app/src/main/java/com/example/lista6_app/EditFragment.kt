@@ -9,8 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import com.example.lista6_app.data.Animal
+import com.example.lista6_app.data.AnimalViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -22,6 +25,7 @@ class EditFragment : Fragment() {
     private var param2: String? = null
 
     lateinit var navController: NavController
+    private lateinit var animalVM: AnimalViewModel
 
     private lateinit var nameText: TextView
     private var name = ""
@@ -54,6 +58,9 @@ class EditFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        animalVM = ViewModelProvider(this).get(AnimalViewModel::class.java)
+
         return inflater.inflate(R.layout.fragment_edit, container, false)
     }
 
@@ -243,16 +250,12 @@ class EditFragment : Fragment() {
         saveButton.setOnClickListener {
             name = nameText.text.toString()
             breed = breedText.text.toString()
-            ListAdapter.updateList(
-                position,
-                name,
-                breed,
-                Color.rgb(redBar.progress, greenBar.progress, blueBar.progress),
-                species,
-                gender,
-                age,
-                behaviour
-            )
+            val animal = Animal(0, name, breed, species, redBar.progress, greenBar.progress, blueBar.progress,
+            gender, behaviour, age)
+            animalVM.addAnimal(animal)
+//            if(position == -1){
+//                animalVM.addAnimal(animal)
+//            }
             Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
 
             if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
