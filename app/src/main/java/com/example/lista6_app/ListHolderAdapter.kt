@@ -18,7 +18,9 @@ import com.example.lista6_app.data.Animal
 import com.example.lista6_app.data.CAT
 import com.example.lista6_app.data.DOG
 
-class ListHolderAdapter(var dataList: LiveData<List<Animal>>) : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
+class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
+
+    private var animalsList = emptyList<Animal>()
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         val image: ImageView = view.findViewById(R.id.list_elem_image)
@@ -48,9 +50,7 @@ class ListHolderAdapter(var dataList: LiveData<List<Animal>>) : RecyclerView.Ada
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val value = dataList.value ?: return
-
-        val animal = value[position]
+        val animal = animalsList[position]
 
         when(animal.species) {
             CAT -> R.drawable.cat
@@ -62,7 +62,12 @@ class ListHolderAdapter(var dataList: LiveData<List<Animal>>) : RecyclerView.Ada
     }
 
     override fun getItemCount(): Int {
-        return dataList.value?.size ?: 0
+        return animalsList.size
+    }
+
+    fun setData(animals: List<Animal>) {
+        animalsList = animals
+        notifyDataSetChanged()
     }
 
 }

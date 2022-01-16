@@ -8,6 +8,8 @@ import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -26,7 +28,6 @@ class RightFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var animalVM: AnimalViewModel
-    private lateinit var adapter: RecyclerView.Adapter<ListHolderAdapter.ViewHolder>
 
     lateinit var navController: NavController
 
@@ -36,9 +37,6 @@ class RightFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-        animalVM = ViewModelProvider(this).get(AnimalViewModel::class.java)
-        adapter = ListHolderAdapter(animalVM.readAllData)
-
     }
 
     override fun onCreateView(
@@ -46,14 +44,17 @@ class RightFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_right, container, false)
+        val adapter = ListHolderAdapter()
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = adapter
 
-        val values = animalVM.readAllData.value
-        if(values != null){
-            Toast.makeText(requireContext(), values.size.toString(), Toast.LENGTH_SHORT).show()
-        }
+        animalVM = ViewModelProvider(this).get(AnimalViewModel::class.java)
+
+
+        animalVM.readAllData.observe(viewLifecycleOwner, Observer { animals ->
+            adapter.setData(animals)
+        })
 
         registerForContextMenu(view)
 
@@ -84,9 +85,6 @@ class RightFragment : Fragment() {
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
             val changed = bundle.getString(DataStore.LV_DATA_CHANGED, "err")
-            if(changed == "changed") {
-                adapter.notifyDataSetChanged()
-            }
         }
 
         val fab: FloatingActionButton = view.findViewById(R.id.add_to_list_fab)
