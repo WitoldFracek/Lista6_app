@@ -86,6 +86,7 @@ class RightFragment : Fragment() {
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_RIGHT, viewLifecycleOwner) { _, bundle ->
             val changed = bundle.getString(DataStore.LV_DATA_CHANGED, "err")
             if(changed == "changed"){
+                Toast.makeText(requireContext(), "Checked", Toast.LENGTH_SHORT).show()
                 adapter.notifyDataSetChanged()
             }
         }
@@ -94,7 +95,6 @@ class RightFragment : Fragment() {
         fab.setOnClickListener{
             MainActivity.backToRight = true
             val myBundle = Bundle()
-            myBundle.putInt(DataStore.LV_POSITION, -1)
             parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
             navController.navigate(R.id.action_global_editFragment)
         }

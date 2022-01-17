@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.lista6_app.data.Animal
 import com.example.lista6_app.data.AnimalViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.example.lista6_app.data.CAT
@@ -25,8 +26,6 @@ class DetailsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private val args by navArgs<DetailsFragmentArgs>()
-
     private lateinit var nameText: TextView
     private lateinit var breedText: TextView
     private lateinit var speciesText: TextView
@@ -34,7 +33,7 @@ class DetailsFragment : Fragment() {
     private lateinit var image: ImageView
     private lateinit var behaviourBar: RatingBar
     private lateinit var ageText: TextView
-    private var position = 0
+    private var animal: Animal? = null
 
     private lateinit var navController: NavController
     private lateinit var animalVM: AnimalViewModel
@@ -61,57 +60,38 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if(savedInstanceState != null) {
+            animal = savedInstanceState.getParcelable(DataStore.ANIMAL)
+        }
+
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav).visibility = View.GONE
 
         nameText = view.findViewById(R.id.details_name)
-        nameText.text = args.currentAnimal.name
 
         breedText = view.findViewById(R.id.details_breed)
-        breedText.text = args.currentAnimal.breed
 
         speciesText = view.findViewById(R.id.details_species)
-        speciesText.text = if(args.currentAnimal.species == CAT) {
-            "Cat"
-        } else {
-            "Dog"
-        }
 
         ageText = view.findViewById(R.id.details_age)
-        ageText.text = "Age: ${args.currentAnimal.age}"
 
         genderText = view.findViewById(R.id.details_gender)
-        genderText.text = if(args.currentAnimal.gender == 'M'){
-            "Male"
-        } else {
-            "Female"
-        }
 
         image = view.findViewById(R.id.details_image)
-        image.setImageResource(if(args.currentAnimal.species == CAT){
-            R.drawable.cat
-        } else {
-            R.drawable.dog
-        })
-        image.setBackgroundColor(Color.rgb(args.currentAnimal.red, args.currentAnimal.green, args.currentAnimal.blue))
+
         behaviourBar = view.findViewById(R.id.details_behaviour_bar)
         behaviourBar.isEnabled = false
-        if(savedInstanceState != null) {
-            position = savedInstanceState.getInt(DataStore.LV_POSITION, 0)
-        }
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _, bundle ->
-            position = bundle.getInt(DataStore.LV_POSITION, 0)
+            animal = bundle.getParcelable(DataStore.ANIMAL)
             modify()
         }
         if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE){
             childFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_DETAILS, viewLifecycleOwner) { _ , bundle ->
-                position = bundle.getInt(DataStore.LV_POSITION, 0)
+                animal = bundle.getParcelable(DataStore.ANIMAL)
+                modify()
             }
-            modify()
         }
         modify()
-
-
 
         if(resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
 
@@ -126,41 +106,48 @@ class DetailsFragment : Fragment() {
             val modifyButton: Button = view.findViewById(R.id.details_modify_button)
             modifyButton.setOnClickListener {
                 navController = view.findNavController()
-                val myBundle = Bundle()
-                myBundle.putInt(DataStore.LV_POSITION, position)
-                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, myBundle)
+                val bundle = Bundle()
+                bundle.putParcelable(DataStore.ANIMAL, animal)
+                parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, bundle)
                 navController.navigate(R.id.action_global_editFragment)
             }
         }
-
-
-
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(DataStore.LV_POSITION, position)
-        super.onSaveInstanceState(outState)
-    }
+    private fun modify() {
+        if(animal == null){
+            animal = animalVM.getFirst()
+        }
+        nameText.text = animal?.name
+        breedText.text = animal?.breed
 
-    private fun modify(){
-        val animalVM: AnimalViewModel = ViewModelProvider(this).get(AnimalViewModel::class.java)
-        nameText.text = "Name: ${ListAdapter.names[position]}"
-        breedText.text = "Breed: ${ListAdapter.breeds[position]}"
-        genderText.text = if(ListAdapter.genders[position] == 'M') {
+        speciesText.text = if(animal?.species == CAT) {
+            "Cat"
+        } else {
+            "Dog"
+        }
+
+        ageText.text = "Age: ${animal?.age}"
+
+        genderText.text = if(animal?.gender == 'M'){
             "Male"
         } else {
             "Female"
         }
-        if(ListAdapter.species[position] == ListAdapter.CAT){
-            speciesText.text = "Cat"
-            image.setImageResource(R.drawable.cat)
+
+        image.setImageResource(if(animal?.species == CAT){
+            R.drawable.cat
         } else {
-            speciesText.text = "Dog"
-            image.setImageResource(R.drawable.dog)
-        }
-        image.setBackgroundColor(ListAdapter.colors[position])
-        ageText.text = "Age: ${ListAdapter.ages[position]}"
-        behaviourBar.rating = ListAdapter.behaviours[position]
+            R.drawable.dog
+        })
+        image.setBackgroundColor(Color.rgb(animal?.red ?: 20, animal?.green ?: 20, animal?.blue ?: 20))
+
+        behaviourBar.rating = animal?.behaviour?:4f
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelable(DataStore.ANIMAL, animal)
+        super.onSaveInstanceState(outState)
     }
 
     companion object {

@@ -35,6 +35,8 @@ class DataStore {
         val LV_BEHAVIOUR = "lvBehaviour"
         val LV_DATA_CHANGED = "updateChangedData"
 
+        val ANIMAL = "animal"
+
 
     }
 }

@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.lista6_app.data.Animal
 import com.example.lista6_app.data.AnimalViewModel
+import com.example.lista6_app.data.CAT
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 private const val ARG_PARAM1 = "param1"
@@ -44,7 +45,7 @@ class EditFragment : Fragment() {
     private lateinit var ageText: TextView
     private lateinit var ageBar: SeekBar
     private var age = 1
-    private var position = -1
+    private var animal: Animal? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +74,7 @@ class EditFragment : Fragment() {
         navController = view.findNavController()
 
         if(savedInstanceState != null){
-            position = savedInstanceState.getInt(DataStore.LV_POSITION, 0)
+            animal = savedInstanceState.getParcelable(DataStore.ANIMAL)
         }
 
         nameText = view.findViewById(R.id.edit_name)
@@ -90,21 +91,20 @@ class EditFragment : Fragment() {
         ageText = view.findViewById(R.id.age_text)
 
         parentFragmentManager.setFragmentResultListener(DataStore.LV_DATA_TO_EDIT, viewLifecycleOwner) { _ , bundle ->
-            position = bundle.getInt(DataStore.LV_POSITION, -1)
-            //Toast.makeText(context, position.toString(), Toast.LENGTH_SHORT).show()
-            nameText.text = if(position == -1){
+            animal = bundle.getParcelable(DataStore.ANIMAL)
+            nameText.text = if(animal == null){
                 "Name"
             } else {
-                ListAdapter.names[position]
+                animal?.name
             }
 
-            breedText.text = if(position == -1){
+            breedText.text = if(animal == null){
                 "Breed"
             } else {
-                ListAdapter.breeds[position]
+                animal?.breed
             }
 
-            if(position == -1){
+            if(animal == null){
                 speciesGroup.check(R.id.radio_cat)
                 image.setImageResource(R.drawable.cat)
                 image.setBackgroundColor(Color.WHITE)
@@ -117,7 +117,7 @@ class EditFragment : Fragment() {
                 ageText.text = "Age: 1"
             } else {
                 speciesGroup.check(
-                    if(ListAdapter.species[position] == ListAdapter.CAT){
+                    if(animal?.species == CAT){
                         R.id.radio_cat
                     } else {
                         R.id.radio_dog
@@ -125,26 +125,27 @@ class EditFragment : Fragment() {
                 )
 
                 image.setImageResource(
-                    if(ListAdapter.species[position] == ListAdapter.CAT){
+                    if(animal?.species == CAT){
                         R.drawable.cat
                     } else {
                         R.drawable.dog
                     }
                 )
-                image.setBackgroundColor(ListAdapter.colors[position])
-                redBar.progress = Color.red(ListAdapter.colors[position])
-                greenBar.progress = Color.green(ListAdapter.colors[position])
-                blueBar.progress = Color.blue(ListAdapter.colors[position])
+                val col = Color.rgb(animal?.red?:20, animal?.green?:20, animal?.blue?:20)
+                image.setBackgroundColor(col)
+                redBar.progress = Color.red(col)
+                greenBar.progress = Color.green(col)
+                blueBar.progress = Color.blue(col)
                 genderGroup.check(
-                    if(ListAdapter.genders[position] == 'M'){
+                    if(animal?.gender == 'M'){
                         R.id.radio_male
                     } else {
                         R.id.radio_female
                     }
                 )
-                behaviourBar.rating = ListAdapter.behaviours[position]
-                ageBar.progress = ListAdapter.ages[position]
-                ageText.text = "Age: ${ListAdapter.ages[position]}"
+                behaviourBar.rating = animal?.behaviour?:4f
+                ageBar.progress = animal?.age?:5
+                ageText.text = "Age: ${animal?.age}"
             }
         }
 
@@ -236,11 +237,11 @@ class EditFragment : Fragment() {
         cancelButton.setOnClickListener {
             if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 navController.navigate(R.id.action_global_rightFragment)
-            } else if(position == -1) {
+            } else if(animal == null) {
                 navController.navigate(R.id.action_global_rightFragment)
             } else {
                 val myBundle = Bundle()
-                myBundle.putInt(DataStore.LV_POSITION, position)
+                myBundle.putParcelable(DataStore.ANIMAL, animal)
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                 navController.navigate(R.id.action_global_detailsFragment)
             }
@@ -250,24 +251,41 @@ class EditFragment : Fragment() {
         saveButton.setOnClickListener {
             name = nameText.text.toString()
             breed = breedText.text.toString()
-            val animal = Animal(0, name, breed, species, redBar.progress, greenBar.progress, blueBar.progress,
-            gender, behaviour, age)
-            animalVM.addAnimal(animal)
-//            if(position == -1){
-//                animalVM.addAnimal(animal)
-//            }
+            if(animal == null){
+                val animalNew = Animal(0, name, breed, species, redBar.progress, greenBar.progress, blueBar.progress,
+                    gender, behaviour, age)
+                animalVM.addAnimal(animalNew)
+            } else {
+                val modAnimal = Animal(animal?.id?:0,
+                    name,
+                    breed,
+                    species,
+                    redBar.progress,
+                    greenBar.progress,
+                    blueBar.progress,
+                    gender,
+                    behaviour,
+                    age
+                )
+                animalVM.updateAnimal(modAnimal)
+                animal?.name = modAnimal.name
+                animal?.breed = modAnimal.breed
+                animal?.species = modAnimal.species
+                animal?.red = modAnimal.red
+                animal?.green = modAnimal.green
+            }
             Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
 
             if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 navController.navigate(R.id.action_global_rightFragment)
-            } else if(position == -1) {
+            } else if(animal == null) {
                 val bundle = Bundle()
                 bundle.putString(DataStore.LV_DATA_CHANGED, "changed")
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_RIGHT, bundle)
                 navController.navigate(R.id.action_global_rightFragment)
             } else {
                 val myBundle = Bundle()
-                myBundle.putInt(DataStore.LV_POSITION, position)
+                myBundle.putParcelable(DataStore.ANIMAL, animal)
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                 navController.navigate(R.id.action_global_detailsFragment)
             }
@@ -277,7 +295,7 @@ class EditFragment : Fragment() {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putInt(DataStore.LV_POSITION, position)
+        outState.putParcelable(DataStore.ANIMAL, animal)
         super.onSaveInstanceState(outState)
     }
 

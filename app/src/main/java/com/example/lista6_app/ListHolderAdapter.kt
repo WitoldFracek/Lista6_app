@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.findFragment
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lista6_app.data.Animal
 import com.example.lista6_app.data.CAT
@@ -27,24 +28,6 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
         val nameText: TextView = view.findViewById(R.id.list_elem_main_text)
         val breedText: TextView = view.findViewById(R.id.list_elem_additional_text)
 
-//        init {
-//            view.setOnClickListener {
-//
-//                val action = DetailsFragmentDirections.actionGlobalDetailsFragment(currentAnimal = animalsL)
-//
-//                val navController = view.findNavController()
-//                val rootFragment: RightFragment = it.findFragment()
-//                val pos = adapterPosition
-//                val bundle = Bundle()
-//                bundle.putInt(DataStore.LV_POSITION, pos)
-//                if(rootFragment.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-//                    navController.navigate(R.id.action_global_detailsFragment)
-//                    rootFragment.parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
-//                } else {
-//                    rootFragment.childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
-//                }
-//            }
-//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -64,8 +47,19 @@ class ListHolderAdapter : RecyclerView.Adapter<ListHolderAdapter.ViewHolder>(){
         holder.breedText.text = animal.breed
 
         holder.itemView.setOnClickListener {
-            val action = DetailsFragmentDirections.actionGlobalDetailsFragment(animal)
-            holder.itemView.findNavController().navigate(action)
+
+            val bundle = Bundle()
+            bundle.putParcelable(DataStore.ANIMAL, animal)
+            val rootFragment = holder.itemView.findFragment<RightFragment>()
+            val navController = rootFragment.findNavController()
+            if(rootFragment.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                    navController.navigate(R.id.action_global_detailsFragment)
+                    rootFragment.parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
+                } else {
+                    rootFragment.childFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, bundle)
+                }
+
+
         }
     }
 

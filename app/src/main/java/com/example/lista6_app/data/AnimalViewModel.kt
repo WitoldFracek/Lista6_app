@@ -24,6 +24,16 @@ class AnimalViewModel(aplication: Application): AndroidViewModel(aplication) {
         }
     }
 
+    fun getFirst(): Animal? {
+        return readAllData.value?.get(0)
+    }
+
+    fun updateAnimal(animal: Animal){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateAnimal(animal)
+        }
+    }
+
 //    fun getAnimalWithId(id: Int): Animal{
 //        viewModelScope.launch(Dispatchers.IO) {
 //            val ret = repository.getAnimalWithId(id)
