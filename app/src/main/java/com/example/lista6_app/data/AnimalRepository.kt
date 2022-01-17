@@ -14,4 +14,8 @@ class AnimalRepository(private val animalDao: AnimalDao) {
         animalDao.updateAnimal(animal)
     }
 
+    fun deleteAnimal(animal: Animal) {
+        animalDao.deleteAnimal(animal)
+    }
+
 }

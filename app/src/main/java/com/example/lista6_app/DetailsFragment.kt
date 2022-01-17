@@ -111,6 +111,16 @@ class DetailsFragment : Fragment() {
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_EDIT, bundle)
                 navController.navigate(R.id.action_global_editFragment)
             }
+
+            val deleteButton: Button = view.findViewById(R.id.details_delete_button)
+            deleteButton.setOnClickListener {
+                navController = view.findNavController()
+                if(animal != null){
+                    animalVM.deleteAnimal(animal as Animal)
+                    Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                }
+                navController.navigate(R.id.action_global_rightFragment)
+            }
         }
     }
 

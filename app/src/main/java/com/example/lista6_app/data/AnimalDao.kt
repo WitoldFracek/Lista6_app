@@ -17,4 +17,7 @@ interface AnimalDao {
 
     @Update
     fun updateAnimal(animal: Animal)
+
+    @Delete
+    fun deleteAnimal(animal: Animal)
 }

@@ -34,6 +34,12 @@ class AnimalViewModel(aplication: Application): AndroidViewModel(aplication) {
         }
     }
 
+    fun deleteAnimal(animal: Animal){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAnimal(animal)
+        }
+    }
+
 //    fun getAnimalWithId(id: Int): Animal{
 //        viewModelScope.launch(Dispatchers.IO) {
 //            val ret = repository.getAnimalWithId(id)

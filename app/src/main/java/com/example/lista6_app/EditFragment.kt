@@ -251,28 +251,25 @@ class EditFragment : Fragment() {
         saveButton.setOnClickListener {
             name = nameText.text.toString()
             breed = breedText.text.toString()
+
+            val modAnimal = Animal(animal?.id?:0,
+                name,
+                breed,
+                species,
+                redBar.progress,
+                greenBar.progress,
+                blueBar.progress,
+                gender,
+                behaviour,
+                age
+            )
+
             if(animal == null){
                 val animalNew = Animal(0, name, breed, species, redBar.progress, greenBar.progress, blueBar.progress,
                     gender, behaviour, age)
                 animalVM.addAnimal(animalNew)
             } else {
-                val modAnimal = Animal(animal?.id?:0,
-                    name,
-                    breed,
-                    species,
-                    redBar.progress,
-                    greenBar.progress,
-                    blueBar.progress,
-                    gender,
-                    behaviour,
-                    age
-                )
                 animalVM.updateAnimal(modAnimal)
-                animal?.name = modAnimal.name
-                animal?.breed = modAnimal.breed
-                animal?.species = modAnimal.species
-                animal?.red = modAnimal.red
-                animal?.green = modAnimal.green
             }
             Toast.makeText(requireContext(), "Saved", Toast.LENGTH_SHORT).show()
 
@@ -285,7 +282,7 @@ class EditFragment : Fragment() {
                 navController.navigate(R.id.action_global_rightFragment)
             } else {
                 val myBundle = Bundle()
-                myBundle.putParcelable(DataStore.ANIMAL, animal)
+                myBundle.putParcelable(DataStore.ANIMAL, modAnimal)
                 parentFragmentManager.setFragmentResult(DataStore.LV_DATA_TO_DETAILS, myBundle)
                 navController.navigate(R.id.action_global_detailsFragment)
             }
